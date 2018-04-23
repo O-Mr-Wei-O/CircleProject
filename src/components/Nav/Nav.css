@@ -1,0 +1,19 @@
+.social{
+    float: left;
+    position: relative;
+    top: 3px;
+    padding: 0 20px;
+    font-family:'Jellyka_-_Love_and_Passion';
+    text-align: center;
+    user-select: none;
+}
+
+.ant-menu{
+    font-size: 16px !important;
+}
+
+.ant-btn-primary{
+    color:#1899ff;
+    background: #fff;
+    border: 1px solid #d9d9d9;
+}
