@@ -55,14 +55,14 @@ export default class Nav extends Component {
                     nickname == null
                     &&
                     <Menu.Item key="login" style={{float: 'right', marginRight: '7%'}}>
-                        <Link to={'/Login'}><Icon type="login"/>登录</Link>
+                        <Link to={'/login'}><Icon type="login"/>登录</Link>
                     </Menu.Item>
                 }
                 {
                     nickname == null
                     &&
                     <Menu.Item key="register" style={{float: 'right'}}>
-                        <Link to={'/Register'}><Icon type="user-add"/>注册</Link>
+                        <Link to={'/register'}><Icon type="user-add"/>注册</Link>
                     </Menu.Item>
                 }
 
