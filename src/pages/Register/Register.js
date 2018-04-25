@@ -2,13 +2,29 @@ import React from 'react';
 import './Register.css';
 
 import {connect} from 'react-redux';
-import {postRegister, validate} from 'actions/register';
+import {postRegister, validate, sendCaptcha} from 'actions/register';
 
-import {Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete} from 'antd';
+import {
+    Form,
+    Input,
+    Tooltip,
+    Icon,
+    Cascader,
+    Select,
+    Row,
+    Col,
+    Checkbox,
+    Button,
+    AutoComplete,
+    message,
+    notification
+} from 'antd';
+import {Link} from 'react-router-dom';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const AutoCompleteOption = AutoComplete.Option;
+
 
 class RegisterFrom extends React.Component {
     constructor(props) {
@@ -22,6 +38,7 @@ class RegisterFrom extends React.Component {
             captchaState: false,
             // 验证Email,'success', 'error', 'validating'
             emailValidate: '',
+            registerStatus: ''
         };
     }
 
@@ -31,9 +48,20 @@ class RegisterFrom extends React.Component {
     componentWillReceiveProps(Props) {
         // console.log('接收到新的Props');
         // 只有不同时才会修改，如果两次都是错的，那么不重新渲染页面，提高性能
-        if(this.props.registerData.email != Props.registerData.email){
+        if (this.props.registerData.email != Props.registerData.email) {
             this.setState({
                 emailValidate: Props.registerData.email
+            });
+        }
+        // 当接收到server返回的注册成功信息时，提示用户
+        if (Props.registerData.status == 'success') {
+            // console.log('---------------');
+            notification.open({
+                message: '恭喜你',
+                description: '注册成功',
+            });
+            this.setState({
+                registerStatus: 'success'
             });
         }
     }
@@ -42,7 +70,14 @@ class RegisterFrom extends React.Component {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                if (values.captcha.toLowerCase() == this.props.registerData.captcha.toLowerCase() && this.state.emailValidate == 'success') {
+                    // console.log('Received values of form: ', values);
+                    this.props.postRegister(values);
+                } else if (values.captcha.toLowerCase() != this.props.registerData.captcha.toLowerCase()) {
+                    message.error('验证码错误，请重新填写');
+                } else if (this.state.emailValidate != 'success') {
+                    message.error('邮箱已存在，请重新填写');
+                }
             }
         });
     };
@@ -71,25 +106,22 @@ class RegisterFrom extends React.Component {
 
     // 将邮箱地址发送给后台进行查询
     checkEmail = (email) => {
-        console.log(email);
-        // 设置成检查中的状态
-        // this.setState({
-        //     emailValidate:'validating'
-        // });
-        this.props.validate(email);
+        // console.log(email);
+        if (email) {
+            this.props.validate(email);
+        }
     };
 
-    // EmailState=()=>{
-    //     if (this.props.registerData.email ==true){
-    //         this.setState({
-    //             emailValidate:'success'
-    //         });
-    //     }else{
-    //         this.setState({
-    //             emailValidate:'error'
-    //         });
-    //     }
-    // }
+    // 验证码
+    Captcha = (email) => {
+        this.setState({
+            captchaState: true
+        });
+        // console.log(email);
+        if (email) {
+            this.props.sendCaptcha(email);
+        }
+    };
 
     render() {
         console.log(this.props);
@@ -201,7 +233,8 @@ class RegisterFrom extends React.Component {
                             {
                                 this.state.captchaState === false
                                 &&
-                                <Button onClick={() => this.setState({captchaState: true})}>Get captcha</Button>
+                                <Button onClick={() => this.Captcha(this.props.form.getFieldValue('email'))}>Get
+                                    captcha</Button>
                             }
 
                             {
@@ -213,14 +246,33 @@ class RegisterFrom extends React.Component {
                         </Col>
                     </Row>
                 </FormItem>
-                <FormItem {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">Register</Button>
-                </FormItem>
+                {
+                    this.state.registerStatus != 'success'
+                    &&
+                    <FormItem {...tailFormItemLayout}>
+                        <Button type="primary" htmlType="submit">Register</Button>
+                    </FormItem>
+                }
+
+                {
+                    this.state.registerStatus == 'success'
+                    &&
+                    <FormItem {...tailFormItemLayout}>
+                        <Button type="primary" onClick={() => sessionStorage.setItem('current','login')}><Link to={'/Login'}>注册成功，点击登录</Link></Button>
+                    </FormItem>
+                }
             </Form>
         );
     }
 }
 
+RegisterFrom.defaultProps = {
+    registerData: {
+        status: '',
+        email: '',
+        captcha: ''
+    }
+};
+
 const Register = Form.create()(RegisterFrom);
-export default connect((state) => ({registerData: state.register}), {postRegister, validate})(Register);
-// export default connect((state) => ({registerData: state}), {postRegister, validate})(Register);
+export default connect((state) => ({registerData: state.register}), {postRegister, validate, sendCaptcha})(Register);

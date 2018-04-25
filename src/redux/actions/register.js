@@ -6,6 +6,10 @@ export const Vaildate_REQUEST = 'register/Vaildate_REQUEST';
 export const Vaildate_SUCCESS = 'register/Vaildate_SUCCESS';
 export const Vaildate_FAIL = 'register/Vaildate_FAIL';
 
+export const Captcha_REQUEST = 'register/Captcha_REQUEST';
+export const Captcha_SUCCESS = 'register/Captcha_SUCCESS';
+export const Captcha_FAIL = 'register/Captcha_FAIL';
+
 // 注册
 export function postRegister(values) {
     return {
@@ -21,5 +25,14 @@ export function validate(email) {
         //如果不写三个，这里的type或报错，因为在中间件里定义了三个
         types: [Vaildate_REQUEST, Vaildate_SUCCESS, Vaildate_FAIL],
         promise: client => client.post('/api/validate',{data:email})
+    };
+}
+
+// 发送验证码
+export function sendCaptcha(email) {
+    return {
+        //如果不写三个，这里的type或报错，因为在中间件里定义了三个
+        types: [Captcha_REQUEST, Captcha_SUCCESS, Captcha_FAIL],
+        promise: client => client.post('/api/captcha',{data:email})
     };
 }
