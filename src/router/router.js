@@ -8,6 +8,8 @@ import Loading from 'components/Loading/Loading';
 import Home from 'bundle-loader?lazy&name=home!pages/Home/Home';
 import NotFound from 'bundle-loader?lazy&name=notFound!pages/NotFound/NotFound';
 import Register from 'bundle-loader?lazy&name=register!pages/Register/Register';
+import Login from 'bundle-loader?lazy&name=login!pages/Login/Login';
+
 
 const createComponent = (component) => (props) => (
     <Bundle load={component}>
@@ -22,6 +24,7 @@ export default () => (
         <Switch>
             <Route exact path="/" component={createComponent(Home)}/>
             <Route path="/register" component={createComponent(Register)}/>
+            <Route path="/login" component={createComponent(Login)}/>
             <Route component={createComponent(NotFound)}/>
         </Switch>
     </div>
