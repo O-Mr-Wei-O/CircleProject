@@ -86,8 +86,8 @@ export default class Nav extends Component {
                 {
                     nickname != null
                     &&
-                    <Menu.Item key="userInfo" style={{float: 'right'}}>
-                        <Link to={'/userInfo'}><Icon type="user"/>{nickname}</Link>
+                    <Menu.Item key="personalInfo" style={{float: 'right'}}>
+                        <Link to={'/personalInfo'}><Icon type="user"/>{nickname}</Link>
                     </Menu.Item>
                 }
 
