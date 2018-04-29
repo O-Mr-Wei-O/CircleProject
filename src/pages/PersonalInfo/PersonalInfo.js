@@ -78,7 +78,7 @@ class PersonalInfo extends React.Component {
     }
 
     render() {
-        console.log(this.props.personalInfoData);
+        // console.log(this.props.personalInfoData);
         const uploadButton = (
             <div>
                 <Icon type={this.state.loading ? 'loading' : 'plus'}/>
@@ -88,45 +88,54 @@ class PersonalInfo extends React.Component {
         const imageUrl = this.state.imageUrl ? this.state.imageUrl : this.props.personalInfoData.avatar;
         // 获取到需要更改信息的email账户
         const email = sessionStorage.getItem('email');
-        return (
-            <div className={'personal'}>
-                <div className={'personalItem'}>
-                    <span className={'type'}>头像</span>
-                    <Upload
-                        // 这里的name在后台会用到
-                        name="avatar"
-                        listType="picture-card"
-                        className="avatar-uploader"
-                        showUploadList={false}
-                        action={'/api/uploadAvatar/' + email}
-                        beforeUpload={beforeUpload}
-                        onChange={this.handleChange}
-                    >
-                        {imageUrl ? <img src={imageUrl} alt=""/> : uploadButton}
-                    </Upload>
-                </div>
-                <div className={'personalItem'}>
-                    <span className={'type'}>昵称</span>
-                    <Input placeholder={this.props.personalInfoData.nickname} style={{width: '30%'}}
-                           onBlur={(e) => this.updatePersonalInfo('nickname', e.target.value)}/>
-                </div>
-                <div className={'personalItem'}>
-                    <span className={'type'}>性别</span>
-                    <RadioGroup onChange={(e) => this.updatePersonalInfo('sex', e.target.value)}
-                                value={this.state.value}>
-                        <Radio value={1}>男</Radio>
-                        <Radio value={2}>女</Radio>
-                    </RadioGroup>
+        if (email) {
+            return (
+                <div className={'personal'}>
+                    <div className={'personalItem'}>
+                        <span className={'type'}>头像</span>
+                        <Upload
+                            // 这里的name在后台会用到
+                            name="avatar"
+                            listType="picture-card"
+                            className="avatar-uploader"
+                            showUploadList={false}
+                            action={'/api/uploadAvatar/' + email}
+                            beforeUpload={beforeUpload}
+                            onChange={this.handleChange}
+                        >
+                            {imageUrl ? <img src={imageUrl} alt=""/> : uploadButton}
+                        </Upload>
+                    </div>
+                    <div className={'personalItem'}>
+                        <span className={'type'}>昵称</span>
+                        <Input placeholder={this.props.personalInfoData.nickname} style={{width: '30%'}}
+                            onBlur={(e) => this.updatePersonalInfo('nickname', e.target.value)}/>
+                    </div>
+                    <div className={'personalItem'}>
+                        <span className={'type'}>性别</span>
+                        <RadioGroup onChange={(e) => this.updatePersonalInfo('sex', e.target.value)}
+                            value={this.state.value}>
+                            <Radio value={1}>男</Radio>
+                            <Radio value={2}>女</Radio>
+                        </RadioGroup>
 
+                    </div>
+                    <div className={'personalItem'}>
+                        <span className={'type'}>生日</span>
+                        <span
+                            className={'type'}>{this.state.birthday ? this.state.birthday : this.props.personalInfoData.birthday}</span>
+                        <DatePicker onChange={(date, dateString) => this.updatePersonalInfo('birthday', dateString)}/>
+                    </div>
                 </div>
-                <div className={'personalItem'}>
-                    <span className={'type'}>生日</span>
-                    <span
-                        className={'type'}>{this.state.birthday ? this.state.birthday : this.props.personalInfoData.birthday}</span>
-                    <DatePicker onChange={(date, dateString) => this.updatePersonalInfo('birthday', dateString)}/>
+            );
+        } else {
+            return (
+                <div className={'noLogin'}>
+                    请先登录！
                 </div>
-            </div>
-        );
+            );
+        }
+
     }
 }
 

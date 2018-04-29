@@ -14,7 +14,7 @@ export default function reducer(state = initState, action) {
             ...state,
         };
     case PersonalInfor_SUCCESS:
-        console.log(action.result.data);
+        // console.log(action.result.data);
         return {
             ...state,
             avatar: action.result.data.avatar,

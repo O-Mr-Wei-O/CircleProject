@@ -39,8 +39,8 @@ export default class Nav extends Component {
                 <Menu.Item key="bars">
                     <Link to={'/circle'}><Icon type="bars"/>圈子</Link>
                 </Menu.Item>
-                <Menu.Item key="daily">
-                    <Link to={'/daily'}><Icon type="form"/>写日记</Link>
+                <Menu.Item key="diary">
+                    <Link to={'/diary'}><Icon type="form"/>写日记</Link>
                 </Menu.Item>
                 <Menu.Item key="search">
                     <Link to={'/search'}><Icon type="search"/>搜索</Link>
