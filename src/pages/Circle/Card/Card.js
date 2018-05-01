@@ -1,8 +1,8 @@
 import React from 'react';
-import {Avatar, Button, Icon, Input, Modal,message} from 'antd';
+import {Avatar, Button, Icon, Input, Modal, message} from 'antd';
 import CommentItem from './CommentItem/CommentItem';
 import {connect} from 'react-redux';
-import {comment} from 'actions/circle';
+import {getCircle, comment, zanAdd,collect} from 'actions/circle';
 
 class Card extends React.Component {
     constructor(props) {
@@ -38,22 +38,26 @@ class Card extends React.Component {
     }
 
     // 点赞
-    zan() {
+    zan(diaryid, email) {
         this.setState({
             zan: true
         });
+        this.props.zanAdd(diaryid, email, this.props.info.number ? this.props.info.number : 0, this.props.info.who ? this.props.info.who : '');
     }
 
     // 收藏
-    collect() {
+    collect(email,diaryid) {
         this.setState({
             collect: true
         });
+        this.props.collect(email,diaryid);
     }
 
     commentTOP(email, diaryid, pid, replyid, commentText) {
         this.props.comment(email, diaryid, pid, replyid, commentText);
         message.success('评论成功');
+        // 更新数据
+        this.props.getCircle(sessionStorage.getItem('email'));
     }
 
     // 控制评论的显隐
@@ -67,30 +71,38 @@ class Card extends React.Component {
     }
 
     render() {
-        console.log(this.props);
-
+        // console.log(this.props);
         const email = sessionStorage.getItem('email');
 
         // 判断是否有图片
         const {pic, createtime} = this.props.info;
+        // 谁点了赞
+        const who = this.props.info.who ? this.props.info.who : '';
+        // 点赞人数
+        const number = this.props.info.number ? this.props.info.number : 0;
+        const collectdiaryid = this.props.collectDiary ? this.props.collectDiary : '';
+        // 判断是否收藏
+        const collected=collectdiaryid.split(',').indexOf(this.props.info.diaryid.toString());
+
         let picArray = [];
         if (pic != '') {
             for (let i = 0; i < pic.split(',').length; i++) {
                 picArray.push(
-                    <img src={pic.split(',')[i]} key={i} className={'CardImg'}/>
+                    <a href={pic.split(',')[i]} target="view_window" key={i}>
+                        <img src={pic.split(',')[i]} className={'CardImg'}/>
+                    </a>
                 );
             }
         }
 
-        let commentArray=[];
-        if (this.props.commentData.length!=0) {
-            for (let i=0;i<this.props.commentData.length;i++) {
+        let commentArray = [];
+        if (this.props.commentData.length != 0) {
+            for (let i = 0; i < this.props.commentData.length; i++) {
                 if (this.props.commentData[i].diaryid == this.props.info.diaryid) {
                     commentArray.push(<CommentItem info={this.props.commentData[i]} key={i}/>);
                 }
             }
         }
-
 
 
         // 设置时间格式
@@ -102,7 +114,7 @@ class Card extends React.Component {
                 <div className={'head'}>
                     <Avatar src={this.props.info.avatar} shape='square'/>
                     <span className={'nickname'}>{this.props.info.nickname}</span>
-                    <span style={{marginLeft:'14px'}}>--{this.props.info.email}</span>
+                    <span style={{marginLeft: '14px'}}>--{this.props.info.email}</span>
                 </div>
                 <div className={'title'}>
                     {this.props.info.title}
@@ -137,16 +149,18 @@ class Card extends React.Component {
                     <div className={'action'}>
                         {/*已点赞*/}
                         {
-                            this.state.zan == true
+                            (this.state.zan == true || who.split(',').indexOf(email)!=-1)
                             &&
-                            <Button type={'primary'} style={{marginRight: '30px'}}><Icon type="heart"/> 1</Button>
+                            <Button type={'primary'} style={{marginRight: '30px'}}><Icon
+                                type="heart"/>&nbsp;喜欢</Button>
                         }
                         {/*未点赞*/}
                         {
-                            this.state.zan == false
+                            (this.state.zan == false && who.split(',').indexOf(email)==-1)
                             &&
-                            <Button style={{marginRight: '30px'}} onClick={() => this.zan()}><Icon
-                                type="heart"/> 0</Button>
+                            <Button style={{marginRight: '30px'}}
+                                    onClick={() => this.zan(this.props.info.diaryid, sessionStorage.getItem('email'))}><Icon
+                                type="heart"/>&nbsp;喜欢</Button>
                         }
 
                         <Button style={{marginRight: '30px'}} onClick={() => this.commentShowOrHide()}><Icon
@@ -154,19 +168,19 @@ class Card extends React.Component {
 
                         {/*已收藏*/}
                         {
-                            this.state.collect == true
+                            (this.state.collect == true || collected !=-1)
                             &&
                             <Button type={'primary'}><Icon type="star"/> 已收藏</Button>
                         }
                         {/*未收藏*/}
                         {
-                            this.state.collect == false
+                            (this.state.collect == false && collected == -1)
                             &&
-                            <Button onClick={() => this.collect()}><Icon type="star"/> 收藏</Button>
+                            <Button onClick={() => this.collect(sessionStorage.getItem('email'),this.props.info.diaryid)}><Icon type="star"/> 收藏</Button>
                         }
                     </div>
                     {/*评论页面*/}
-                    <div className={'comment'} ref={'comment'} style={{display: 'block'}}>
+                    <div className={'comment'} ref={'comment'} style={{display: 'none'}}>
                         <p style={{
                             fontSize: '16px',
                             fontWeight: 600,
@@ -195,7 +209,9 @@ class Card extends React.Component {
                                 &&
                                 // 这里评论默认是父级评论（一级）
                                 <Button type={'primary'}
-                                        onClick={() => this.commentTOP(email, this.props.info.diaryid, 0, 0, this.state.comment)}>评论</Button>
+                                        onClick={() => {
+                                            this.commentTOP(email, this.props.info.diaryid, 0, 0, this.state.comment);
+                                        }}>评论</Button>
                             }
                         </div>
                     </div>
@@ -205,4 +221,4 @@ class Card extends React.Component {
     }
 }
 
-export default connect((state) => ({commentData: state.circle.comment}), {comment})(Card);
+export default connect((state) => ({commentData: state.circle.comment,collectDiary:state.circle.collectDiary}), {getCircle, comment, zanAdd,collect})(Card);

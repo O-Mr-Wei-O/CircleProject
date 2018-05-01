@@ -25,6 +25,7 @@
 
 .Card .head {
     display: flex;
+    width: 100%;
     align-items: center;
     margin-bottom: 14px;
 }
@@ -84,5 +85,18 @@
 }
 
 .Card .CardImg{
+    margin: 10px 0;
     width: 200px;
+}
+
+.replyItem{
+    width: 95%;
+    padding: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 40px;
+    margin-top: 14px;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
 }

@@ -3,11 +3,12 @@ import './Circle.css';
 import Card from './Card/Card';
 
 import {BackTop, Breadcrumb, Icon, Tabs} from 'antd';
+
 const TabPane = Tabs.TabPane;
 
 import {connect} from 'react-redux';
 
-import {getCircle,comment} from 'actions/circle';
+import {getCircle, comment} from 'actions/circle';
 
 
 class Circle extends React.Component {
@@ -21,7 +22,7 @@ class Circle extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getCircle();
+        this.props.getCircle(sessionStorage.getItem('email'));
     }
 
     render() {
@@ -30,11 +31,22 @@ class Circle extends React.Component {
         const email = sessionStorage.getItem('email');
 
         let CardArray = [];
+        let mydiaryArray = [];
+        let mycollectArray = [];
         if (this.props.circleData.diary != null) {
             for (let i = 0; i < this.props.circleData.diary.length; i++) {
                 CardArray.unshift(<Card info={this.props.circleData.diary[i]} key={i}/>);
+                // 我的日记
+                if (this.props.circleData.diary[i].email == email) {
+                    mydiaryArray.unshift(<Card info={this.props.circleData.diary[i]} key={i}/>);
+                }
+                // 我的收藏
+                if (this.props.circleData.collectDiary.split(',').indexOf(this.props.circleData.diary[i].diaryid.toString()) != -1) {
+                    mycollectArray.unshift(<Card info={this.props.circleData.diary[i]} key={i}/>);
+                }
             }
         }
+
 
         if (email) {
             return (
@@ -44,17 +56,17 @@ class Circle extends React.Component {
                         <Breadcrumb.Item onClick={() => this.setState({
                             page: 'all'
                         })} href={'javascript:void(0);'}>
-                            <span>所有日记</span>
+                            <span>圈子</span>
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item onClick={() => this.setState({
+                            page: 'mydiary'
+                        })} href={'javascript:void(0);'}>
+                            <span>我的日记</span>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item onClick={() => this.setState({
                             page: 'collect'
                         })} href={'javascript:void(0);'}>
                             <span>我的收藏</span>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item onClick={() => this.setState({
-                            page: 'history'
-                        })} href={'javascript:void(0);'}>
-                            <span>浏览历史</span>
                         </Breadcrumb.Item>
                     </Breadcrumb>
                     {/*展示不同页面*/}
@@ -66,14 +78,18 @@ class Circle extends React.Component {
                         })
                     }
                     {
-                        this.state.page == 'collect'
+                        this.state.page == 'mydiary'
                         &&
-                        <span>收藏</span>
+                        mydiaryArray.map(function (item) {
+                            return item;
+                        })
                     }
                     {
-                        this.state.page == 'history'
+                        this.state.page == 'collect'
                         &&
-                        <span>浏览历史</span>
+                        mycollectArray.map(function (item) {
+                            return item;
+                        })
                     }
                     <BackTop/>
                 </div>
@@ -88,5 +104,5 @@ class Circle extends React.Component {
     }
 }
 
-export default connect((state) => ({circleData: state.circle}), {getCircle,comment})(Circle);
+export default connect((state) => ({circleData: state.circle}), {getCircle, comment})(Circle);
 // export default Circle;

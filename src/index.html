@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <title>Circle</title>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.22.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
 </head>
 <body style="height: 100%;background: #F6F6F6">
-<div id="app" style="height: 100%;min-width: 1200px;min-height: 600px"></div>
+<div id="app" style="height: 100%;min-width: 1200px;min-height: 600px">
+    <script>
+        var socket = io('http://localhost:3000');
+        socket.emit('message', 'coooooo');
+        socket.on('successlogin',(val)=>console.log(val));
+    </script>
+</div>
+
+
 </body>
 </html>

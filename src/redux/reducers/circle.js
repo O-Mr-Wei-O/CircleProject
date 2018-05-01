@@ -1,9 +1,17 @@
-import {Circle_REQUEST, Circle_FAIL, Circle_SUCCESS,Comment_REQUEST,Comment_SUCCESS,Comment_FAIL} from 'actions/circle';
+import {
+    Circle_REQUEST,
+    Circle_FAIL,
+    Circle_SUCCESS,
+    Comment_REQUEST,
+    Comment_SUCCESS,
+    Comment_FAIL
+} from 'actions/circle';
 
 const initState = {
     // 日记的所有数据
     diary: null,
-    comment:null
+    comment: null,
+    collectDiary:null
 };
 
 export default function reducer(state = initState, action) {
@@ -18,7 +26,8 @@ export default function reducer(state = initState, action) {
             ...state,
             // 传回来的是字符串，需要先转换成object类型的json对象
             diary: action.result.data.diary,
-            comment:action.result.data.comment
+            comment: action.result.data.comment,
+            collectDiary: action.result.data.collectDiary
         };
     case Circle_FAIL:
         return {

@@ -37,6 +37,8 @@ class Home extends Component {
                 NewsArray.push(<News key={i} info={news.result.list[i]}/>);
             }
         }
+
+
         return (
             <div style={{width: 1710, margin: 'auto',background:'#FFFFFF'}}>
                 <Menu
