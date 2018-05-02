@@ -86,6 +86,12 @@ class LoginForm extends React.Component {
                     &&
                     <Button style={{width: '100%'}} type='danger' ghost>登录失败</Button>
                 }
+
+                {
+                    this.state.status == 'baned'
+                    &&
+                    <Button style={{width: '100%'}} type='danger' ghost><Link to={'/unseal'}>您已被封禁，点击申请解封</Link></Button>
+                }
             </Form>
         );
     }

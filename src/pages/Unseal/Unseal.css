@@ -1,0 +1,15 @@
+.Unseal{
+    margin: auto;
+    padding: 20px 10%;
+    width: 1300px;
+    height: 100%;
+    background: #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.unsealform{
+    width: 80%;
+    padding: 50px 15% 50px 0;
+}

@@ -6,6 +6,8 @@ import login from 'reducers/login';
 import personalInfo from 'reducers/personalInfo';
 import diary from 'reducers/diary';
 import circle from 'reducers/circle';
+import report from 'reducers/report';
+import unseal from 'reducers/unseal';
 
 
 export default combineReducers({
@@ -14,5 +16,7 @@ export default combineReducers({
     login,
     personalInfo,
     diary,
-    circle
+    circle,
+    report,
+    unseal
 });

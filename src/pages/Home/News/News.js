@@ -12,7 +12,7 @@ export default class News extends Component {
                         <div className={'newsDiv'}>
                             <img src={info.pic} alt={info.title} style={{float: 'left'}}/>
                             <div style={{float: 'left', marginLeft: '30px'}}>
-                                <a href={info.url}>{info.title}</a>
+                                <a href={info.url} target="view_window">{info.title}</a>
                                 <br/>
                                 <span style={{fontSize: '16px'}}><Icon type="form"
                                     style={{marginRight: '10px'}}/>来源：{info.src}</span>
