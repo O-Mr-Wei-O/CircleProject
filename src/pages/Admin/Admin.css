@@ -70,3 +70,10 @@
 .ReportItem{
 
 }
+
+.Broadcast{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding: 30px;
+}

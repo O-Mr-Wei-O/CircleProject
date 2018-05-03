@@ -1,4 +1,8 @@
 import React, {Component} from 'react';
+
+import socket from '../../socket.io/socket.io';
+
+
 import {Link, Redirect, Route} from 'react-router-dom';
 import './Nav.css';
 import {Menu, Icon} from 'antd';
@@ -22,10 +26,28 @@ export default class Nav extends Component {
         // });
     };
 
+    logout(){
+        const email=sessionStorage.getItem('email');
+        // console.log(email);
+        socket.emit('logout', email);
+
+        sessionStorage.removeItem('nickname');
+        sessionStorage.removeItem('email');
+        sessionStorage.removeItem('admin');
+
+        // 通过setState来重新渲染页面
+        // this.setState({
+        //     test:''
+        // });
+
+        location.reload();
+    }
+
     render() {
         const nickname = sessionStorage.getItem('nickname');
         //使用session存储menu的键值，这样每次刷新就不会改变，只有在重开才会改变
         const current = sessionStorage.getItem('current') ? sessionStorage.getItem('current') : 'home';
+
         return (
             <Menu
                 onClick={this.handleClick}
@@ -71,14 +93,7 @@ export default class Nav extends Component {
                     &&
                     <Menu.Item key="logout" style={{float: 'right', marginRight: '7%'}}>
                         <span onClick={() => {
-                            sessionStorage.removeItem('nickname');
-                            sessionStorage.removeItem('email');
-                            sessionStorage.removeItem('admin');
-                            // 通过setState来重新渲染页面
-                            // this.setState({
-                            //     test:''
-                            // });
-                            location.reload();
+                            this.logout();
                         }}>退出</span>
                     </Menu.Item>
                 }

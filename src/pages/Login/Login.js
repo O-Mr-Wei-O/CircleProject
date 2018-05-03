@@ -1,12 +1,29 @@
 import React, {Component} from 'react';
 import './Login.css';
-import {Form, Icon, Input, Button, Checkbox} from 'antd';
+import {Form, Icon, Input, Button, Checkbox, notification} from 'antd';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {postLogin} from 'actions/login';
 
+import socket from '../../socket.io/socket.io';
+
 const FormItem = Form.Item;
 
+// 用户登录
+const openNotificationWithIcon = (email) => {
+    notification['success']({
+        message: '新用户通知',
+        description: '用户' + email + '已登录',
+    });
+};
+
+// 全体广播
+const openNotificationWithIcon1 = (text) => {
+    notification['success']({
+        message: '广播',
+        description: text,
+    });
+};
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -26,10 +43,10 @@ class LoginForm extends React.Component {
         });
     };
 
-    componentWillReceiveProps(Props){
+    componentWillReceiveProps(Props) {
         if (Props.loginData.login != this.props.loginData.login) {
             this.setState({
-                status:Props.loginData.login
+                status: Props.loginData.login
             });
             if (Props.loginData.login == 'loginSuccess') {
                 // 设置nickname
@@ -38,6 +55,13 @@ class LoginForm extends React.Component {
                 sessionStorage.setItem('email', Props.loginData.email);
                 // 设置管理员，1是，0不是
                 sessionStorage.setItem('admin', Props.loginData.admin);
+
+                //登陆成功后进行连接server以便接受广播等
+                socket.emit('email', Props.loginData.email);
+                socket.on('successlogin', (val) => console.log(val));
+                // 新用户登录
+                socket.on('newLogin', (email) => openNotificationWithIcon(email));
+                socket.on('broadcast', (text) => openNotificationWithIcon1(text));
             }
         }
     }
@@ -90,7 +114,8 @@ class LoginForm extends React.Component {
                 {
                     this.state.status == 'baned'
                     &&
-                    <Button style={{width: '100%'}} type='danger' ghost><Link to={'/unseal'}>您已被封禁，点击申请解封</Link></Button>
+                    <Button style={{width: '100%'}} type='danger' ghost><Link
+                        to={'/unseal'}>您已被封禁，点击申请解封</Link></Button>
                 }
             </Form>
         );
