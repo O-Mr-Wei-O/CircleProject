@@ -15,7 +15,7 @@ class UnsealApplication extends React.Component {
     }
 
     render() {
-        console.log(this.props);
+        // console.log(this.props);
         let itemArray = [];
         if (this.props.unsealData.unsealApplication) {
             for (let i=0;i<this.props.unsealData.unsealApplication.length;i++) {

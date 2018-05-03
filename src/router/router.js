@@ -14,6 +14,7 @@ import Diary from 'bundle-loader?lazy&name=diary!pages/Diary/Diary';
 import Circle from 'bundle-loader?lazy&name=circle!pages/Circle/Circle';
 import Admin from 'bundle-loader?lazy&name=admin!pages/Admin/Admin';
 import Unseal from 'bundle-loader?lazy&name=unseal!pages/Unseal/Unseal';
+import Search from 'bundle-loader?lazy&name=search!pages/Search/Search';
 
 
 
@@ -36,6 +37,7 @@ export default () => (
             <Route path="/circle" component={createComponent(Circle)}/>
             <Route path="/admin" component={createComponent(Admin)}/>
             <Route path="/unseal" component={createComponent(Unseal)}/>
+            <Route path="/search" component={createComponent(Search)}/>
             <Route component={createComponent(NotFound)}/>
         </Switch>
     </div>

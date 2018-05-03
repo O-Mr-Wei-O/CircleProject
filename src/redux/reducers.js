@@ -8,6 +8,7 @@ import diary from 'reducers/diary';
 import circle from 'reducers/circle';
 import report from 'reducers/report';
 import unseal from 'reducers/unseal';
+import searchuser from 'reducers/searchuser';
 
 
 export default combineReducers({
@@ -18,5 +19,6 @@ export default combineReducers({
     diary,
     circle,
     report,
-    unseal
+    unseal,
+    searchuser
 });
