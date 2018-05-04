@@ -9,6 +9,7 @@ import circle from 'reducers/circle';
 import report from 'reducers/report';
 import unseal from 'reducers/unseal';
 import searchuser from 'reducers/searchuser';
+import chat from 'reducers/chat';
 
 
 export default combineReducers({
@@ -20,5 +21,6 @@ export default combineReducers({
     circle,
     report,
     unseal,
-    searchuser
+    searchuser,
+    chat
 });

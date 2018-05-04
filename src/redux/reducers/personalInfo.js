@@ -4,7 +4,9 @@ const initState = {
     avatar: null,
     nickname: null,
     sex: null,
-    birthday: null
+    birthday: null,
+    ifollowemail:'',
+    followedme:''
 };
 
 export default function reducer(state = initState, action) {
@@ -20,7 +22,9 @@ export default function reducer(state = initState, action) {
             avatar: action.result.data.avatar,
             nickname: action.result.data.nickname,
             sex: parseInt(action.result.data.sex),
-            birthday: action.result.data.birthday
+            birthday: action.result.data.birthday,
+            ifollowemail:action.result.data.ifollowemail,
+            followedme:action.result.data.followedme
         };
     case PersonalInfo_FAIL:
         return {

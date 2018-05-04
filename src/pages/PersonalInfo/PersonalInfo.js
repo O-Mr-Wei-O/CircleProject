@@ -3,7 +3,8 @@ import './PersonalInfo.css';
 import {connect} from 'react-redux';
 import {getPersonalInfo, updatePersonalInfo} from 'actions/personalInfo';
 
-import {Button, Input, Radio, DatePicker, Upload, Icon, message} from 'antd';
+import {Button, Input, Radio, DatePicker, Upload, Icon, message, Tag, Tooltip} from 'antd';
+import {Link} from 'react-router-dom';
 
 function getBase64(img, callback) {
     const reader = new FileReader();
@@ -78,7 +79,22 @@ class PersonalInfo extends React.Component {
     }
 
     render() {
-        // console.log(this.props.personalInfoData);
+        // console.log(this.props);
+
+        // 我的关注
+        const {ifollowemail} = this.props.personalInfoData;
+
+        let followArray = [];
+        for (let i = 0; i < ifollowemail.split(',').length; i++) {
+            followArray.push(
+                <Tooltip title="点击进入聊天页面" key={i}>
+                    <Link to={'/chat'}>
+                        <Tag color="geekblue">{ifollowemail.split(',')[i]}</Tag>
+                    </Link>
+                </Tooltip>
+            );
+        }
+
         const uploadButton = (
             <div>
                 <Icon type={this.state.loading ? 'loading' : 'plus'}/>
@@ -109,12 +125,12 @@ class PersonalInfo extends React.Component {
                     <div className={'personalItem'}>
                         <span className={'type'}>昵称</span>
                         <Input placeholder={this.props.personalInfoData.nickname} style={{width: '30%'}}
-                            onBlur={(e) => this.updatePersonalInfo('nickname', e.target.value)}/>
+                               onBlur={(e) => this.updatePersonalInfo('nickname', e.target.value)}/>
                     </div>
                     <div className={'personalItem'}>
                         <span className={'type'}>性别</span>
                         <RadioGroup onChange={(e) => this.updatePersonalInfo('sex', e.target.value)}
-                            value={this.state.value}>
+                                    value={this.state.value}>
                             <Radio value={1}>男</Radio>
                             <Radio value={2}>女</Radio>
                         </RadioGroup>
@@ -125,6 +141,15 @@ class PersonalInfo extends React.Component {
                         <span
                             className={'type'}>{this.state.birthday ? this.state.birthday : this.props.personalInfoData.birthday}</span>
                         <DatePicker onChange={(date, dateString) => this.updatePersonalInfo('birthday', dateString)}/>
+                    </div>
+
+                    <div className={'personalItem'}>
+                        <span className={'type'}>我的关注</span>
+                        {
+                            followArray.map(function (items) {
+                                return items;
+                            })
+                        }
                     </div>
                 </div>
             );

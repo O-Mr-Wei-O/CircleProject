@@ -15,6 +15,7 @@ import Circle from 'bundle-loader?lazy&name=circle!pages/Circle/Circle';
 import Admin from 'bundle-loader?lazy&name=admin!pages/Admin/Admin';
 import Unseal from 'bundle-loader?lazy&name=unseal!pages/Unseal/Unseal';
 import Search from 'bundle-loader?lazy&name=search!pages/Search/Search';
+import Chat from 'bundle-loader?lazy&name=chat!pages/Chat/Chat';
 
 
 
@@ -38,6 +39,7 @@ export default () => (
             <Route path="/admin" component={createComponent(Admin)}/>
             <Route path="/unseal" component={createComponent(Unseal)}/>
             <Route path="/search" component={createComponent(Search)}/>
+            <Route path="/chat" component={createComponent(Chat)}/>
             <Route component={createComponent(NotFound)}/>
         </Switch>
     </div>

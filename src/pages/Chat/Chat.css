@@ -1,0 +1,65 @@
+.noLogin {
+    margin: auto;
+    width: 40%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    font-size: 30px;
+    color: grey;
+}
+
+.Chat {
+    margin: auto;
+    padding: 50px 13%;
+    background: #FFFFFF;
+    width: 1300px;
+    height: 100%;
+}
+
+.chatlist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.chatWindow {
+    margin: 50px;
+    padding: 10px  50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+     border: 1px solid #fff4f4;
+    border-radius: 10px;
+}
+
+.chatWindow .chatLeft {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+.chatWindow .chatRight {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 10px 0;
+    padding: 5px;
+}
+
+.sendMsg{
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    margin-top: 15px;
+}
+
+#chatContainer{
+    width: 100%;
+}
