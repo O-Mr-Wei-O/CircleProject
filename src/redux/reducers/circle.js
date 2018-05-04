@@ -11,7 +11,8 @@ const initState = {
     // 日记的所有数据
     diary: null,
     comment: null,
-    collectDiary:null
+    collectDiary: null,
+    followedme: null
 };
 
 export default function reducer(state = initState, action) {
@@ -27,7 +28,8 @@ export default function reducer(state = initState, action) {
             // 传回来的是字符串，需要先转换成object类型的json对象
             diary: action.result.data.diary,
             comment: action.result.data.comment,
-            collectDiary: action.result.data.collectDiary
+            collectDiary: action.result.data.collectDiary,
+            followedme: action.result.data.followedme
         };
     case Circle_FAIL:
         return {

@@ -1,12 +1,22 @@
 import React from 'react';
+import socket from '../../socket.io/socket.io';
 import './Diary.css';
 
-import {Input, Upload, Icon, Modal, Button, message} from 'antd';
+import {Input, Upload, Icon, Modal, Button, message,notification} from 'antd';
 
 const {TextArea} = Input;
 
 import {connect} from 'react-redux';
-import {writeDiary} from 'actions/diary';
+import {writeDiary,whoFollowme} from 'actions/diary';
+
+const openNotification = (who) => {
+    notification.open({
+        message: who+'发表了新日记',
+        description: '',
+    });
+};
+
+socket.on('remindNewDiary',(me)=>openNotification(me));
 
 
 class Diary extends React.Component {
@@ -19,6 +29,11 @@ class Diary extends React.Component {
             title: '',
             content: '',
         };
+    }
+
+    componentWillMount() {
+        // 获取谁关注了我，以便写日记后发送通知给关注我的人
+        this.props.whoFollowme( sessionStorage.getItem('email'));
     }
 
     componentWillReceiveProps(Props) {
@@ -42,6 +57,7 @@ class Diary extends React.Component {
         const content = this.state.content ? this.state.content : null;
         // 点击props会渲染一次，原因未知(导致重复出现提示的BUG)
         this.props.writeDiary(email, title, content, pathArr.join(','));
+        socket.emit('newDiary',email,this.props.diaryData.followedme);
     }
 
 
@@ -57,7 +73,7 @@ class Diary extends React.Component {
     handleChange = ({fileList}) => this.setState({fileList});
 
     render() {
-        // console.log(this.state);
+        // console.log(this.props.diaryData.followedme);
 
         const {previewVisible, previewImage, fileList} = this.state;
         const uploadButton = (
@@ -133,4 +149,4 @@ class Diary extends React.Component {
     }
 }
 
-export default connect((state) => ({diaryData: state.diary}), {writeDiary})(Diary);
+export default connect((state) => ({diaryData: state.diary}), {writeDiary,whoFollowme})(Diary);
