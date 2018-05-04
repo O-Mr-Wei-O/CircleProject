@@ -10,6 +10,7 @@ import report from 'reducers/report';
 import unseal from 'reducers/unseal';
 import searchuser from 'reducers/searchuser';
 import chat from 'reducers/chat';
+import retrieve from 'reducers/retrieve';
 
 
 export default combineReducers({
@@ -22,5 +23,6 @@ export default combineReducers({
     report,
     unseal,
     searchuser,
-    chat
+    chat,
+    retrieve
 });

@@ -16,8 +16,7 @@ import Admin from 'bundle-loader?lazy&name=admin!pages/Admin/Admin';
 import Unseal from 'bundle-loader?lazy&name=unseal!pages/Unseal/Unseal';
 import Search from 'bundle-loader?lazy&name=search!pages/Search/Search';
 import Chat from 'bundle-loader?lazy&name=chat!pages/Chat/Chat';
-
-
+import Retrieve from 'bundle-loader?lazy&name=retrieve!pages/Retrieve/Retrieve';
 
 const createComponent = (component) => (props) => (
     <Bundle load={component}>
@@ -40,6 +39,7 @@ export default () => (
             <Route path="/unseal" component={createComponent(Unseal)}/>
             <Route path="/search" component={createComponent(Search)}/>
             <Route path="/chat" component={createComponent(Chat)}/>
+            <Route path="/retrieve" component={createComponent(Retrieve)}/>
             <Route component={createComponent(NotFound)}/>
         </Switch>
     </div>

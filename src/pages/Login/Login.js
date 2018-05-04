@@ -108,7 +108,10 @@ class LoginForm extends React.Component {
                 {
                     this.state.status == 'loginFail'
                     &&
-                    <Button style={{width: '100%'}} type='danger' ghost>登录失败</Button>
+                    <div>
+                        <Button style={{width: '100%', marginBottom: '30px'}} type='danger' ghost>登录失败</Button>
+                        <Button style={{width: '100%'}}><Link to={'/retrieve'}>找回密码</Link></Button>
+                    </div>
                 }
 
                 {
