@@ -19,7 +19,7 @@ class Search extends React.Component {
                 <div className={'Search'}>
                     <Tabs defaultActiveKey="searchuser">
                         <TabPane tab="搜索用户" key="searchuser"><Searchuser/></TabPane>
-                        <TabPane tab="搜索日记" key="searchdiary"><Searchdiary/></TabPane>
+                        <TabPane tab="站外搜索" key="searchdiary"><Searchdiary/></TabPane>
                     </Tabs>
                     <BackTop/>
                 </div>
